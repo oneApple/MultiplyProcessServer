@@ -7,7 +7,7 @@
 #include"messagehandle/handleSendfdMsg.h"
 #include<unistd.h>
 
-void *handleSendfdMsg::packDataHead()
+commontype::headInfo *handleSendfdMsg::packDataHead()
 {
      commontype::headInfo *phead = new commontype::headInfo;
      phead->_size = this->_dataBodysize;
@@ -15,10 +15,11 @@ void *handleSendfdMsg::packDataHead()
      return phead;
 }
 
-void *handleSendfdMsg::packDataBody()
+char *handleSendfdMsg::packDataBody()
 {
-	pid_t *pid = new pid_t;
+	char *buf = new char[sizeof(pid_t)];
+	pid_t *pid = (pid_t*)buf;
     *pid = getpid();
     this->_dataBodysize = sizeof(pid_t);
-    return pid;
+    return buf;
 }

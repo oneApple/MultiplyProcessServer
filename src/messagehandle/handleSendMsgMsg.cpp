@@ -7,7 +7,7 @@
 #include"messagehandle/handleSendMsgMsg.h"
 #include"commonfunction/netSocketFun.h"
 #include<unistd.h>
-void *handleSendMsgMsg::packDataHead()
+commontype::headInfo *handleSendMsgMsg::packDataHead()
 {
 	commontype::headInfo *phead = new commontype::headInfo;
 	phead->_size = this->_dataBodysize;
@@ -15,7 +15,7 @@ void *handleSendMsgMsg::packDataHead()
 	return phead;
 }
 
-void *handleSendMsgMsg::packDataBody()
+char *handleSendMsgMsg::packDataBody()
 {
 	int readbytes;
 	char *readbuf = new char[this->_recvDatasize];
@@ -25,9 +25,10 @@ void *handleSendMsgMsg::packDataBody()
 		return 0;
 	}
 	delete readbuf;
-	pid_t *pid = new pid_t;
+	char *buf = new char[sizeof(pid_t)];
+	pid_t *pid = (pid_t*)buf;
 	*pid = getpid();
 	this->_dataBodysize = sizeof(pid_t);
-	return pid;
+	return buf;
 }
 

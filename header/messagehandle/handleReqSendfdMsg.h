@@ -10,8 +10,8 @@
 #include"messageHandleInterface.h"
 class handleReqSendfdMsg : public messageHandleInterface{
 private:
-	virtual void *packDataHead();
-	virtual void *packDataBody();
+	virtual commontype::headInfo *packDataHead();
+	virtual char *packDataBody();
 public:
 	handleReqSendfdMsg():messageHandleInterface(magicnum::messagetype::PCREQSENDFD){}
 };

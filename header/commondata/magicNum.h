@@ -25,7 +25,7 @@ const unsigned BUFFERSIZE = 2;
 };
 
 namespace parentprocess{
-const unsigned LISTNEPORT = 8080;
+const unsigned LISTNEPORT = 1234;
 const unsigned LISTENBLOCKNUM = 10;
 const unsigned EPOLLTIMEOUT = -1;
 };

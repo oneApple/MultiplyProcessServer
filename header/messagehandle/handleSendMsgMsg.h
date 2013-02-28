@@ -10,8 +10,8 @@
 #include"messageHandleInterface.h"
 class handleSendMsgMsg : public messageHandleInterface{
 private:
-	virtual void *packDataHead();
-	virtual void *packDataBody();
+	virtual commontype::headInfo *packDataHead();
+	virtual char *packDataBody();
 public:
 	handleSendMsgMsg():messageHandleInterface(magicnum::messagetype::CCMESSAGECC){}
 };

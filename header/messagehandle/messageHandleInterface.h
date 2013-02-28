@@ -20,14 +20,14 @@ protected:
 	int _recvSocketfd;
 protected:
 	messageHandleInterface(unsigned type):_recvDatatype(type){}
-	virtual void *packDataHead() = 0;
-	virtual void *packDataBody() = 0;
+	virtual commontype::headInfo *packDataHead() = 0;
+	virtual char *packDataBody() = 0;
 	void *mergeDataHeadAndBody()
 	{
 		commontype::dataInfo *pdataInfo = new commontype::dataInfo;
 		pdataInfo->_type = this->_recvDatatype;
-		void *pbody = this->packDataBody();//顺序不能换
-		void *phead = this->packDataHead();
+		char *pbody = this->packDataBody();//顺序不能换
+		commontype::headInfo *phead = this->packDataHead();
 
 		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
 		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
@@ -35,7 +35,7 @@ protected:
 		if(this->_dataBodysize != 0)
 		{
 			memcpy(pdataInfo->_pdata + sizeof(commontype::headInfo),pbody,this->_dataBodysize);
-			delete pbody;
+			delete []pbody;
 		}
 		pdataInfo->_size = sizeof(commontype::headInfo) + this->_dataBodysize;
 		return pdataInfo;

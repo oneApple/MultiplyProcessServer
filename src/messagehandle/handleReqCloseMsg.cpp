@@ -7,7 +7,7 @@
 #include"messagehandle/handleReqCloseMsg.h"
 #include<unistd.h>
 
-void *handleReqCloseMsg::packDataHead()
+commontype::headInfo *handleReqCloseMsg::packDataHead()
 {
      commontype::headInfo *phead = new commontype::headInfo;
      phead->_size = this->_dataBodysize;
@@ -15,7 +15,7 @@ void *handleReqCloseMsg::packDataHead()
      return phead;
 }
 
-void *handleReqCloseMsg::packDataBody()
+char *handleReqCloseMsg::packDataBody()
 {
     this->_dataBodysize = 0;
     return 0;

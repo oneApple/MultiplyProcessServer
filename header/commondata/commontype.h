@@ -11,7 +11,7 @@ namespace commontype{
 //放入发送队列的数据类型
 struct _dataandsize{
 	unsigned _type;
-	void *_pdata;//要发送的数据（头+数据）
+	char *_pdata;//要发送的数据（头+数据）
 	unsigned _size;//头+数据的大小
 };
 typedef struct _dataandsize dataInfo;
