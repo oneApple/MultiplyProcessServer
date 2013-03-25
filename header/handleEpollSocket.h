@@ -8,7 +8,7 @@
 #ifndef HANDLEEPOLLSOCKET_H_
 #define HANDLEEPOLLSOCKET_H_
 
-#include<i386-linux-gnu/sys/epoll.h>
+#include<sys/epoll.h>
 
 #include"commonfunction/localSocketFun.h"
 #include"commonfunction/netSocketFun.h"

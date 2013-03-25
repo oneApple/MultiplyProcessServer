@@ -11,7 +11,7 @@
 #define CONTROLLEN CMSG_LEN(sizeof(int))
 #define CONTROLLEN CMSG_LEN(sizeof(int))
 
-#include<i386-linux-gnu/sys/types.h>
+#include<sys/types.h>
 
 int send_fd(int fd,int fd_to_send);
 int send_err(int fd,int errcode,const char *msg);

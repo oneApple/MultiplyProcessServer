@@ -5,7 +5,7 @@
  *      Author: keym
  */
 #include<stdlib.h>
-#include<i386-linux-gnu/sys/socket.h>
+#include<sys/socket.h>
 #include<fcntl.h>
 #include<errno.h>
 #include<unistd.h>

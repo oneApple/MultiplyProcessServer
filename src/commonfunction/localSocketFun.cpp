@@ -5,7 +5,7 @@
  *      Author: keym
  */
 #include"commonfunction/localSocketFun.h"
-#include<i386-linux-gnu/sys/socket.h>
+#include<sys/socket.h>
 #include<unistd.h>
 #include<assert.h>
 #include<errno.h>
