@@ -7,7 +7,8 @@
 
 #ifndef NETSOCKETFUN_H_
 #define NETSOCKETFUN_H_
-#include<sys/types.h>
+#include<i386-linux-gnu/sys/types.h>
+
 int ListenAndSetBlockNum(int fd, int backlog) ;
 int SetSocketNonblocking(int sock) ;   //将文件描述符设置为非阻塞模式
 ssize_t RepeatRecv(int fd,char *buf,ssize_t bufsize);

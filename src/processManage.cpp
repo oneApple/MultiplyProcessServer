@@ -5,8 +5,8 @@
  *      Author: keym
  */
 
-#include<sys/resource.h>
-#include<sys/socket.h>
+#include<i386-linux-gnu/sys/resource.h>
+#include<i386-linux-gnu/sys/socket.h>
 #include<assert.h>
 #include<exception>
 #include<string.h>
@@ -198,5 +198,6 @@ int processManage::ReleaseProcess(int socket,PROCESSSTATE type)
 		}
 		this->_uTotalNumOfProcess /= 2;
 	}
+	std::cout<<"total,runing:"<<this->_uTotalNumOfProcess<<","<<this->_uNumOfRunningProcess<<std::endl;
 	return magicnum::SUCCESS;
 }

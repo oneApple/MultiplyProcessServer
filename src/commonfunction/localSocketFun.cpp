@@ -83,10 +83,13 @@ int recv_fd(int fd,ssize_t (*userfunc)(int,const void *,size_t))
 		msg.msg_name=NULL;
 		msg.msg_namelen=0;
 		if(cmptr==NULL&&(cmptr=(cmsghdr*)malloc(CONTROLLEN))==NULL)
+		{
 			return magicnum::FAILIED;
+		}
 		msg.msg_control=cmptr;
 		msg.msg_controllen=CONTROLLEN;
-		if((nr=recvmsg(fd,&msg,0))<0){
+		if((nr=recvmsg(fd,&msg,0))<0)
+		{
 			if(errno == EAGAIN || errno == EINTR)//EAGAIN：缓存无数据;EINTR：系统中断
 			{
 				//printf("buffer no data\n");//缓存区已无数据可读
@@ -96,7 +99,9 @@ int recv_fd(int fd,ssize_t (*userfunc)(int,const void *,size_t))
 			perror("recvmsg");
 			//perror("recv");
 			return magicnum::FAILIED;
-		}else if(nr==0){
+		}
+		else if(nr==0)
+		{
 			printf("connection closed by server\n");
 			return magicnum::FAILIED;
 		}
@@ -105,21 +110,29 @@ int recv_fd(int fd,ssize_t (*userfunc)(int,const void *,size_t))
 			if(*ptr++==0){
 				assert(ptr == &buf[nr-1]);
 				status=*ptr&0xFF;
-				if(status==0){
-					if(msg.msg_controllen!=CONTROLLEN){
+				if(status==0)
+				{
+					if(msg.msg_controllen!=CONTROLLEN)
+					{
 						printf("status=0,but no fd\n");
 						return magicnum::FAILIED;
 					}
 					newfd=*(int*)CMSG_DATA(cmptr);
-				}else{
+				}
+				else
+				{
 					newfd=-status;
 				}
 				nr=-2;
 			}
 		}
 		if(nr > 0 && (*userfunc)(STDERR_FILENO,buf,nr)!=nr)
+		{
 			return magicnum::FAILIED;
+		}
 		if(status>=0)
+		{
 			return(newfd);
+		}
 	}
 }

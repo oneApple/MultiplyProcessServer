@@ -52,8 +52,7 @@ void parentProcess::initializeChildProcessfd(int num)
 	processManage::GetInstance()->CreateAllProcess(num,this);
 }
 
-void parentProcess::InitializeManage(int num)
-throw(std::exception)
+void parentProcess::InitializeManage(int num) throw(std::exception)
 {
 	handleEpollSocket::initializeEpoll();
 	this->initializeListenfd();

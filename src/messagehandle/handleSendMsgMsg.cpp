@@ -7,6 +7,8 @@
 #include"messagehandle/handleSendMsgMsg.h"
 #include"commonfunction/netSocketFun.h"
 #include<unistd.h>
+
+#include<iostream>
 commontype::headInfo *handleSendMsgMsg::packDataHead()
 {
 	commontype::headInfo *phead = new commontype::headInfo;

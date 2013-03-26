@@ -61,7 +61,7 @@ void childProcess::CommunicateHandle()
 					//这里可能是客户端关闭或出现错误
 					if(readbytes == magicnum::CLOSEED)
 					{
-						std::cerr<<"magicnum::CLOSEED"<<std::endl;
+						//std::cerr<<"magicnum::CLOSEED"<<std::endl;
 						commontype::headInfo _head;
 						_head._type = magicnum::messagetype::CPREQCLOSED;
 						_head._size = 0;

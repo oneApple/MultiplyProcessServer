@@ -21,6 +21,7 @@ messageHandle::messageHandle()
 	this->_mmsgHandle[magicnum::messagetype::CCMESSAGECC] = new handleSendMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::CPREQCLOSED] = new handleReqCloseMsg;
 }
+
 void *messageHandle::msgHandle(void *recvbuf,int recvfd)
 {
 	commontype::headInfo *phead = (commontype::headInfo*)recvbuf;

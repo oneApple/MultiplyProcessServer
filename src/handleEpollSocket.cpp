@@ -4,8 +4,9 @@
  *  Created on: 2013-1-30
  *      Author: keym
  */
-#include<sys/resource.h>
-#include<sys/socket.h>
+#include<i386-linux-gnu/sys/resource.h>
+#include<i386-linux-gnu/sys/socket.h>
+
 #include<unistd.h>
 #include<exception>
 #include<iostream>
