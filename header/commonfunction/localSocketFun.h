@@ -8,10 +8,9 @@
 #ifndef LOCALSOCKETFUN_H_
 #define LOCALSOCKETFUN_H_
 
-#define CONTROLLEN CMSG_LEN(sizeof(int))
-#define CONTROLLEN CMSG_LEN(sizeof(int))
+#include<sys/types.h>
 
-#include<i386-linux-gnu/sys/types.h>
+#define CONTROLLEN CMSG_LEN(sizeof(ssize_t))
 
 //发送文件描述符
 int send_fd(int fd,int fd_to_send);

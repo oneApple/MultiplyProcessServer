@@ -5,8 +5,8 @@
  *      Author: keym
  */
 
-#include<i386-linux-gnu/sys/resource.h>
-#include<i386-linux-gnu/sys/socket.h>
+#include<sys/resource.h>
+#include<sys/socket.h>
 #include<assert.h>
 #include<exception>
 #include<string.h>

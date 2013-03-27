@@ -5,15 +5,15 @@
  *      Author: keym
  */
 
-#ifndef HANDLEREQSENDFDMSG_H_
-#define HANDLEREQSENDFDMSG_H_
+#ifndef RECVFDANDSENDMSGMSG_H_
+#define RECVFDANDSENDMSGMSG_H_
 #include"messageHandleInterface.h"
-class handleReqSendfdMsg : public messageHandleInterface{
+class recvFdAndSendMsgMsg : public messageHandleInterface{
 private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	handleReqSendfdMsg():messageHandleInterface(magicnum::messagetype::PCREQSENDFD){}
+	recvFdAndSendMsgMsg():messageHandleInterface(magicnum::messagetype::PCREQSENDFD){}
 };
 
 #endif /* HANDLEREQSENDFDMSG_H_ */

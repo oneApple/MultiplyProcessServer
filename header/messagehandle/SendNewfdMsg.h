@@ -5,15 +5,15 @@
  *      Author: keym
  */
 
-#ifndef HANDLESENDFDMSG_H_
-#define HANDLESENDFDMSG_H_
+#ifndef SENDNEWFDMSG_H_
+#define SENDNEWFDMSG_H_
 #include"messageHandleInterface.h"
-class handleSendfdMsg : public messageHandleInterface{
+class SendNewfdMsg : public messageHandleInterface{
 private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	handleSendfdMsg():messageHandleInterface(magicnum::messagetype::NULLSENDFDT){}
+	SendNewfdMsg():messageHandleInterface(magicnum::messagetype::NULLSENDFDT){}
 };
 
 #endif /* HANDLESENDFDMSG_H_ */

@@ -4,19 +4,25 @@
  *  Created on: 2013-2-1
  *      Author: keym
  */
+#include"childProcess.h"
 
-#include"messagehandle/handleReqSendfdMsg.h"
+#include"messagehandle/recvFdAndSendMsgMsg.h"
 #include"commonfunction/netSocketFun.h"
 #include<unistd.h>
-commontype::headInfo *handleReqSendfdMsg::packDataHead()
+commontype::headInfo *recvFdAndSendMsgMsg::packDataHead()
 {
+	childProcess *_tempuser = (childProcess *)this->_uperuser;
+	_tempuser->acceptClientSocket();
+	_tempuser->AddEpollSocket(_tempuser->GetSocketfd('c'));
+	this->_sendSocketfd = _tempuser->GetSocketfd('c');
+
 	commontype::headInfo *phead = new commontype::headInfo;
 	phead->_size = this->_dataBodysize;
 	phead->_type = magicnum::messagetype::CCMESSAGECC;
 	return phead;
 }
 
-char *handleReqSendfdMsg::packDataBody()
+char *recvFdAndSendMsgMsg::packDataBody()
 {
 	int readbytes;
 	char *readbuf = new char[this->_recvDatasize];

@@ -12,7 +12,7 @@
 #include"handleEpollSocket.h"
 #include"childProcessInfo.h"
 
-class parentProcess : private handleEpollSocket{
+class parentProcess : protected handleEpollSocket{
 private:
 	int _netListenfd;//接受客户端连接的socket
 	std::map<int,bool> _mSocketAndAlloc;
@@ -22,6 +22,7 @@ private:
 	void initializeChildProcessfd(int num);
 	void acceptNewConnection(int newfd);
 	void sendNewConnection(int sendfd);
+public:
 	void relEpollSocket(int socket,PROCESSSTATE type);
 public:
 	void InitializeManage(int num)throw(std::exception);

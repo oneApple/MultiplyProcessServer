@@ -61,31 +61,15 @@ void childProcess::CommunicateHandle()
 					//这里可能是客户端关闭或出现错误
 					if(readbytes == magicnum::CLOSEED)
 					{
-						//std::cerr<<"magicnum::CLOSEED"<<std::endl;
 						commontype::headInfo _head;
 						_head._type = magicnum::messagetype::CPREQCLOSED;
 						_head._size = 0;
-						handleEpollSocket::packData(messageHandle::getInstance()->msgHandle(&_head,_childSocketfd));
-						handleEpollSocket::modEpollSocket(this->_parentSocket,true);
+						messageHandle::getInstance()->msgHandle(&_head,_childSocketfd,this);
 					}
 					continue;
 				}
 				//处理子进程指令
-				void * pdata = messageHandle::getInstance()->msgHandle(readbuf,_childSocketfd);
-				if(pdata == 0)
-				{
-					continue;
-				}
-				handleEpollSocket::packData(pdata);
-				commontype::dataInfo *pInfo = (commontype::dataInfo *)pdata;
-				if(pInfo->_type == magicnum::messagetype::PCREQSENDFD)
-				{
-					this->acceptClientSocket();
-					handleEpollSocket::addEpollSocket(this->_clientSocket);
-					handleEpollSocket::modEpollSocket(this->_clientSocket,true);
-					continue;
-				}
-				handleEpollSocket::modEpollSocket(_childSocketfd,true);
+				messageHandle::getInstance()->msgHandle(readbuf,_childSocketfd,this);
 			}
 			else if(events[i].events&EPOLLOUT)
 			{

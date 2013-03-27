@@ -8,7 +8,7 @@
 #ifndef HANDLEEPOLLSOCKET_H_
 #define HANDLEEPOLLSOCKET_H_
 
-#include<i386-linux-gnu/sys/epoll.h>
+#include<sys/epoll.h>
 
 #include"commonfunction/localSocketFun.h"
 #include"commonfunction/netSocketFun.h"
@@ -31,9 +31,9 @@ protected:
 	handleEpollSocket():_maxNumOfEpollfd(magicnum::processmanage::MAXNUMPROCESS){}
 	void initializeEpoll();
 	void addEpollSocket(int fd);
+public:
 	void delEpollSocket(int fd);
 	void modEpollSocket(int fd,bool rOrw);
-protected:
 	void packData(void *pdata);
 	unsigned sendData(int socket);
 };

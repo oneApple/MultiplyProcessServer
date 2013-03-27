@@ -6,8 +6,8 @@
  */
 #include"messagehandle/messageHandle.h"
 #include"commondata/magicNum.h"
-#include"messagehandle/handleSendfdMsg.h"
-#include"messagehandle/handleReqSendfdMsg.h"
+#include"messagehandle/SendNewfdMsg.h"
+#include"messagehandle/recvFdAndSendMsgMsg.h"
 #include"messagehandle/handleSendMsgMsg.h"
 #include"messagehandle/handleReqCloseMsg.h"
 
@@ -16,17 +16,17 @@ messageHandle* messageHandle::_singleInstance = NULL;
 
 messageHandle::messageHandle()
 {
-	this->_mmsgHandle[magicnum::messagetype::NULLSENDFDT] = new handleSendfdMsg;
-	this->_mmsgHandle[magicnum::messagetype::PCREQSENDFD] = new handleReqSendfdMsg;
+	this->_mmsgHandle[magicnum::messagetype::NULLSENDFDT] = new SendNewfdMsg;
+	this->_mmsgHandle[magicnum::messagetype::PCREQSENDFD] = new recvFdAndSendMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::CCMESSAGECC] = new handleSendMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::CPREQCLOSED] = new handleReqCloseMsg;
 }
 
-void *messageHandle::msgHandle(void *recvbuf,int recvfd)
+void *messageHandle::msgHandle(void *recvbuf,int recvfd,void *uperuser)
 {
 	commontype::headInfo *phead = (commontype::headInfo*)recvbuf;
 	messageHandleInterface *_instance = this->getMsgHandleInstance(phead->_type);
-	return _instance->HandleMsg(phead->_size,recvfd);
+	return _instance->HandleMsg(phead->_size,recvfd,uperuser);
 }
 
 messageHandleInterface *messageHandle::getMsgHandleInstance(unsigned type)

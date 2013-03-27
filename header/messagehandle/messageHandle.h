@@ -31,6 +31,6 @@ public:
 	static Garbo release;
 public:
 	messageHandle();
-	void *msgHandle(void *recvbuf,int recvfd);
+	void *msgHandle(void *recvbuf,int recvfd,void *uperuser);
 };
 #endif /* MESSAGEHANDLE_H_ */

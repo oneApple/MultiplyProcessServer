@@ -9,8 +9,11 @@
 #include<unistd.h>
 
 #include<iostream>
+#include<assert.h>
 commontype::headInfo *handleSendMsgMsg::packDataHead()
 {
+	this->_sendSocketfd = this->_recvSocketfd;
+
 	commontype::headInfo *phead = new commontype::headInfo;
 	phead->_size = this->_dataBodysize;
 	phead->_type = magicnum::messagetype::CCMESSAGECC;
@@ -26,6 +29,8 @@ char *handleSendMsgMsg::packDataBody()
 		//这里可能是客户端关闭或出现错误
 		return 0;
 	}
+	pid_t *temp = (pid_t *)readbuf;
+	assert(*temp == getpid());
 	delete readbuf;
 	char *buf = new char[sizeof(pid_t)];
 	pid_t *pid = (pid_t*)buf;

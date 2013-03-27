@@ -7,7 +7,7 @@
 
 #ifndef NETSOCKETFUN_H_
 #define NETSOCKETFUN_H_
-#include<i386-linux-gnu/sys/types.h>
+#include<sys/types.h>
 
 int ListenAndSetBlockNum(int fd, int backlog) ;
 int SetSocketNonblocking(int sock) ;   //将文件描述符设置为非阻塞模式

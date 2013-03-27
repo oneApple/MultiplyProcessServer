@@ -9,16 +9,34 @@
 #define CHILDPROCESS_H_
 #include"handleEpollSocket.h"
 
-class childProcess : private handleEpollSocket{
+#include<assert.h>
+
+class childProcess : protected handleEpollSocket{
 private:
 	int _parentSocket;
 	int _clientSocket;
-private:
+public:
 	void acceptClientSocket();
+	void AddEpollSocket(int socketfd)
+	{
+		handleEpollSocket::addEpollSocket(socketfd);
+	}
+	int  GetSocketfd(char pOrc)
+	{
+		switch(pOrc)
+		{
+		case 'p':
+			return this->_parentSocket;
+		case 'c':
+			return this->_clientSocket;
+		default:
+			assert(1 == 0);
+		}
+	}
 public:
 	explicit childProcess(int parentfd):_parentSocket(parentfd){}
-    void InitializeProcess();
-    void CommunicateHandle();
+	void InitializeProcess();
+	void CommunicateHandle();
 };
 
 #endif /* CHILDPROCESS_H_ */

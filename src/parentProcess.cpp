@@ -52,7 +52,8 @@ void parentProcess::initializeChildProcessfd(int num)
 	processManage::GetInstance()->CreateAllProcess(num,this);
 }
 
-void parentProcess::InitializeManage(int num) throw(std::exception)
+void parentProcess::InitializeManage(int num)
+throw(std::exception)
 {
 	handleEpollSocket::initializeEpoll();
 	this->initializeListenfd();
@@ -67,8 +68,7 @@ void parentProcess::acceptNewConnection(int newfd)
 	commontype::headInfo _head;
 	_head._type = magicnum::messagetype::NULLSENDFDT;
 	_head._size = 0;
-	handleEpollSocket::packData(messageHandle::getInstance()->msgHandle(&_head,_allocatefd));
-	handleEpollSocket::modEpollSocket(_allocatefd,true);
+	messageHandle::getInstance()->msgHandle(&_head,_allocatefd,this);
 }
 
 void parentProcess::sendNewConnection(int sendfd)
@@ -154,7 +154,12 @@ void parentProcess::CommunicationHandle()
 			{
 				//通知的顺序与投递的顺序相同
 				handleEpollSocket::sendData(events[i].data.fd);
-				this->sendNewConnection(events[i].data.fd);
+
+				if(this->_dnewConnectSocket.size() != 0)
+				{
+					this->sendNewConnection(events[i].data.fd);
+				}
+
 				handleEpollSocket::modEpollSocket(events[i].data.fd,false);
 			}
 			else if((events[i].events&EPOLLHUP)||(events[i].events&EPOLLERR))
