@@ -143,23 +143,16 @@ void parentProcess::CommunicationHandle()
 					this->relEpollSocket(_childSocketfd,ERR);
 					continue;
 				}
-				commontype::headInfo *pHead = (commontype::headInfo*)readbuf;
-				if(pHead->_type == magicnum::messagetype::CPREQCLOSED)
-				{
-					std::cerr<<"relepollsocket"<<std::endl;
-					this->relEpollSocket(_childSocketfd,INIT);
-				}
+				messageHandle::getInstance()->msgHandle(readbuf,_childSocketfd,this);
 			}
 			else if(events[i].events&EPOLLOUT)
 			{
 				//通知的顺序与投递的顺序相同
 				handleEpollSocket::sendData(events[i].data.fd);
-
 				if(this->_dnewConnectSocket.size() != 0)
 				{
 					this->sendNewConnection(events[i].data.fd);
 				}
-
 				handleEpollSocket::modEpollSocket(events[i].data.fd,false);
 			}
 			else if((events[i].events&EPOLLHUP)||(events[i].events&EPOLLERR))

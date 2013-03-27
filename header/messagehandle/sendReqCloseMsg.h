@@ -5,15 +5,15 @@
  *      Author: keym
  */
 
-#ifndef HANDLEREQCLOSEMSG_H_
-#define HANDLEREQCLOSEMSG_H_
+#ifndef SENDREQCLOSEMSG_H_
+#define SENDREQCLOSEMSG_H_
 #include"messageHandleInterface.h"
-class handleReqCloseMsg : public messageHandleInterface{
+class sendReqCloseMsg : public messageHandleInterface{
 private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	handleReqCloseMsg():messageHandleInterface(magicnum::messagetype::CPREQCLOSED){}
+	sendReqCloseMsg():messageHandleInterface(magicnum::messagetype::CPREQCLOSED){}
 };
 
 #endif /* HANDLEREQCLOSEMSG_H_ */

@@ -35,7 +35,7 @@ public:
 	void delEpollSocket(int fd);
 	void modEpollSocket(int fd,bool rOrw);
 	void packData(void *pdata);
-	unsigned sendData(int socket);
+	void sendData(int socket);
 };
 
 #endif /* HANDLEEPOLLSOCKET_H_ */

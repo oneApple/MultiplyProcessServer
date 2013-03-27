@@ -22,19 +22,24 @@ protected:
 	int _recvSocketfd;
 	int _sendSocketfd;
 protected:
-	messageHandleInterface(unsigned type):_recvDatatype(type),_uperuser(NULL){}
+	messageHandleInterface(unsigned type):_uperuser(NULL){}
 	virtual commontype::headInfo *packDataHead() = 0;
 	virtual char *packDataBody() = 0;
-	void *mergeDataHeadAndBody()
+	void mergeDataHeadAndBody()
 	{
 		commontype::dataInfo *pdataInfo = new commontype::dataInfo;
-		pdataInfo->_type = this->_recvDatatype;
 		char *pbody = this->packDataBody();//顺序不能换
 		commontype::headInfo *phead = this->packDataHead();
+
+		if(phead == NULL)
+		{
+			return;
+		}
 
 		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
 		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
 		delete phead;
+
 		if(this->_dataBodysize != 0)
 		{
 			memcpy(pdataInfo->_pdata + sizeof(commontype::headInfo),pbody,this->_dataBodysize);
@@ -45,15 +50,14 @@ protected:
 		handleEpollSocket *_tempuser = (handleEpollSocket *)this->_uperuser;
 		_tempuser->packData(pdataInfo);
 		_tempuser->modEpollSocket(this->_sendSocketfd,true);
-		return pdataInfo;
 	}
 public:
-	void *HandleMsg(unsigned size,int recvfd,void *uperuser)
+	void HandleMsg(unsigned size,int recvfd,void *uperuser)
 	{
 		this->_recvDatasize = size;
 		this->_recvSocketfd = recvfd;
 		this->_uperuser = uperuser;
-		return mergeDataHeadAndBody();
+		mergeDataHeadAndBody();
 	}
 };
 

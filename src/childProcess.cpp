@@ -7,6 +7,7 @@
 #include"childProcess.h"
 #include"commondata/commontype.h"
 #include"messagehandle/messageHandle.h"
+#include"commondata/magicNum.h"
 
 #include<iostream>
 #include<exception>
@@ -14,7 +15,8 @@
 #include<string.h>
 #include<deque>
 
-#define MAXLINE 20
+static void packReqCloseMsg(void *buffer);
+
 
 void childProcess::acceptClientSocket()
 {
@@ -36,7 +38,7 @@ void childProcess::CommunicateHandle()
 	struct epoll_event events[this->_maxNumOfEpollfd + 1];
 	std::deque<pid_t*> _dPid;
 	int readbytes;
-	char readbuf[MAXLINE];
+	char readbuf[magicnum::MSGHEADSIZE];
 	for(;;)
 	{
 		int nfds;
@@ -54,27 +56,22 @@ void childProcess::CommunicateHandle()
 		{
 			if(events[i].events&EPOLLIN)
 			{
-				memset(readbuf,0,MAXLINE);
-				int _childSocketfd = events[i].data.fd;
-				if((readbytes=RepeatRecv(_childSocketfd,readbuf,sizeof(commontype::headInfo))) < 0)
+				memset(readbuf,0,magicnum::MSGHEADSIZE);
+				if((readbytes=RepeatRecv(events[i].data.fd,readbuf,sizeof(commontype::headInfo))) < 0)
 				{
 					//这里可能是客户端关闭或出现错误
 					if(readbytes == magicnum::CLOSEED)
 					{
-						commontype::headInfo _head;
-						_head._type = magicnum::messagetype::CPREQCLOSED;
-						_head._size = 0;
-						messageHandle::getInstance()->msgHandle(&_head,_childSocketfd,this);
+						packReqCloseMsg(readbuf);
 					}
-					continue;
 				}
 				//处理子进程指令
-				messageHandle::getInstance()->msgHandle(readbuf,_childSocketfd,this);
+				messageHandle::getInstance()->msgHandle(readbuf,events[i].data.fd,this);
 			}
 			else if(events[i].events&EPOLLOUT)
 			{
 				//通知的顺序与投递的顺序相同
-				this->sendData(events[i].data.fd);
+				handleEpollSocket::sendData(events[i].data.fd);
 				handleEpollSocket::modEpollSocket(events[i].data.fd,false);
 			}
 			else if((events[i].events&EPOLLHUP)||(events[i].events&EPOLLERR))
@@ -83,4 +80,11 @@ void childProcess::CommunicateHandle()
 			}
 		}
 	}
+}
+
+static void packReqCloseMsg(void *buffer)
+{
+	commontype::headInfo* _head = (commontype::headInfo *)buffer;
+	_head->_type = magicnum::messagetype::CCREQCLOSED;
+	_head->_size = 0;
 }

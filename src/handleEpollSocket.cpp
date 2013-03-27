@@ -78,15 +78,13 @@ void handleEpollSocket::packData(void *pdata)
 	this->_ddataToSend.push_back((commontype::dataInfo*)pdata);
 }
 
-unsigned handleEpollSocket::sendData(int sendfd)
+void handleEpollSocket::sendData(int sendfd)
 {
 	commontype::dataInfo *pdataInfo = this->_ddataToSend[0];
 	this->_ddataToSend.pop_front();
-	unsigned _type = magicnum::messagetype::NULLTYPENUM;
-	if(RepeatSend(sendfd,(char*)pdataInfo->_pdata,pdataInfo->_size) != magicnum::FAILIED)
+	if(RepeatSend(sendfd,(char*)pdataInfo->_pdata,pdataInfo->_size) == magicnum::FAILIED)
 	{
-		_type = pdataInfo->_type;
+		perror("handleEpollSocket::sendData");
 	}
 	delete pdataInfo;
-	return _type;
 }

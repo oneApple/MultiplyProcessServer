@@ -9,7 +9,8 @@
 #include"messagehandle/SendNewfdMsg.h"
 #include"messagehandle/recvFdAndSendMsgMsg.h"
 #include"messagehandle/handleSendMsgMsg.h"
-#include"messagehandle/handleReqCloseMsg.h"
+#include"messagehandle/sendReqCloseMsg.h"
+#include"messagehandle/handleAndRecvCloseMsg.h"
 
 #include<assert.h>
 messageHandle* messageHandle::_singleInstance = NULL;
@@ -19,14 +20,15 @@ messageHandle::messageHandle()
 	this->_mmsgHandle[magicnum::messagetype::NULLSENDFDT] = new SendNewfdMsg;
 	this->_mmsgHandle[magicnum::messagetype::PCREQSENDFD] = new recvFdAndSendMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::CCMESSAGECC] = new handleSendMsgMsg;
-	this->_mmsgHandle[magicnum::messagetype::CPREQCLOSED] = new handleReqCloseMsg;
+	this->_mmsgHandle[magicnum::messagetype::CCREQCLOSED] = new sendReqCloseMsg;
+	this->_mmsgHandle[magicnum::messagetype::CPREQCLOSED] = new handleAndRecvCloseMsg;
 }
 
-void *messageHandle::msgHandle(void *recvbuf,int recvfd,void *uperuser)
+void messageHandle::msgHandle(void *recvbuf,int recvfd,void *uperuser)
 {
 	commontype::headInfo *phead = (commontype::headInfo*)recvbuf;
 	messageHandleInterface *_instance = this->getMsgHandleInstance(phead->_type);
-	return _instance->HandleMsg(phead->_size,recvfd,uperuser);
+	_instance->HandleMsg(phead->_size,recvfd,uperuser);
 }
 
 messageHandleInterface *messageHandle::getMsgHandleInstance(unsigned type)

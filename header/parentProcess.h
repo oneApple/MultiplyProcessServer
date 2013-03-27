@@ -24,7 +24,6 @@ private:
 	void sendNewConnection(int sendfd);
 public:
 	void relEpollSocket(int socket,PROCESSSTATE type);
-public:
 	void InitializeManage(int num)throw(std::exception);
 	void AddSocketToEpoll(int socket);
 	void CommunicationHandle();

@@ -7,35 +7,38 @@
 
 #ifndef MAGICNUM_H_
 #define MAGICNUM_H_
+#include<sys/types.h>
 //魔法数一定不要直接使用
 namespace magicnum{
 
-const int SUCCESS = 0;
-const int FAILIED = -1;
-const int CLOSEED = -2;
+const ssize_t SUCCESS = 0;
+const ssize_t FAILIED = -1;
+const ssize_t CLOSEED = -2;
+const size_t MSGHEADSIZE = sizeof(size_t) * 2;
 
 namespace processmanage{
-const unsigned DIVISOR = 2;
-const unsigned MAXNUMPROCESS = 4;
-const unsigned MINNUMPROCESS = 2;
+const size_t DIVISOR = 2;
+const size_t MAXNUMPROCESS = 4;
+const size_t MINNUMPROCESS = 2;
 };
 
 namespace localsocketfun{
-const unsigned BUFFERSIZE = 2;
+const size_t BUFFERSIZE = 2;
 };
 
 namespace parentprocess{
-const unsigned LISTNEPORT = 1234;
-const unsigned LISTENBLOCKNUM = 10;
-const unsigned EPOLLTIMEOUT = -1;
+const size_t LISTNEPORT = 1234;
+const size_t LISTENBLOCKNUM = 10;
+const ssize_t EPOLLTIMEOUT = -1;
 };
 
 namespace messagetype{
-const unsigned NULLTYPENUM = 1000;
-const unsigned PCREQSENDFD = 1001;//发送描述符
-const unsigned CPREQCLOSED = 2002;
-const unsigned NULLSENDFDT = 3003;
-const unsigned CCMESSAGECC = 4004;//客户间传递的消息
+const size_t NULLTYPENUM = 1000;
+const size_t PCREQSENDFD = 1001;//发送描述符
+const size_t CPREQCLOSED = 2002;
+const size_t NULLSENDFDT = 3003;
+const size_t CCMESSAGECC = 4004;//客户间传递的消息
+const size_t CCREQCLOSED = 5005;
 };
 
 };
