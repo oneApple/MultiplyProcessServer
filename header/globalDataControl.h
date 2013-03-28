@@ -9,10 +9,13 @@
 #define GLOBALDATACONTROL_H_
 
 #include<map>
+#include<sys/types.h>
 class globalDataControl{
 private:
 	std::map<int,bool> _mclientfdAndAlloc;
+	size_t _uallocnum;
 public:
+	globalDataControl():_uallocnum(0){}
 	void AddFreeSockfd(const int sockfd);
 	const int AllocFreeSockfd();
 	void ReleaseBusySockfd(const int sockfd);

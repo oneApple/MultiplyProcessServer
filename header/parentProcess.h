@@ -29,6 +29,10 @@ public:
 	{
 		return this->_cfdAndAlloc.AllocFreeSockfd();
 	}
+	void ReleaseSockfd(const int sockfd)
+	{
+		this->_cfdAndAlloc.ReleaseBusySockfd(sockfd);
+	}
 	void relEpollSocket(int socket,PROCESSSTATE type);
 	void InitializeManage(int num)throw(std::exception);
 	void AddSocketToEpoll(int socket);

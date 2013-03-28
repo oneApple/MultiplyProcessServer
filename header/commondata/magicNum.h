@@ -46,6 +46,8 @@ const size_t CCREQCLOSED = 5005;
 const size_t NULLSENDALA = 6006;
 const size_t DPSENDALARM = 7007;
 const size_t PCMESSAGEPC = 8008;
+const size_t CCRELEASECC = 9009;
+const size_t CPRELEASECP = 0110;
 };
 
 };

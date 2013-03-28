@@ -14,7 +14,8 @@
 #include"messagehandle/sendAlarmMsg.h"
 #include"messagehandle/recvAlarmAndSendMsgMsg.h"
 #include"messagehandle/recvpAndSendcMsgMsg.h"
-
+#include"messagehandle/recvAndSendReleaseMsg.h"
+#include"messagehandle/recvAndHandleReleaseMsg.h"
 
 #include<assert.h>
 messageHandle* messageHandle::_singleInstance = NULL;
@@ -29,8 +30,8 @@ messageHandle::messageHandle()
 	this->_mmsgHandle[magicnum::messagetype::NULLSENDALA] = new sendAlarmMsg;
 	this->_mmsgHandle[magicnum::messagetype::DPSENDALARM] = new recvAlarmAndSendMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::PCMESSAGEPC] = new recvpAndSendcMsgMsg;
-
-
+	this->_mmsgHandle[magicnum::messagetype::CCRELEASECC] = new recvAndSendReleaseMsg;
+	this->_mmsgHandle[magicnum::messagetype::CPRELEASECP] = new recvAndHandleReleaseMsg;
 }
 
 void messageHandle::msgHandle(void *recvbuf,int recvfd,void *uperuser)
