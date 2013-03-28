@@ -26,6 +26,10 @@ namespace localsocketfun{
 const size_t BUFFERSIZE = 2;
 };
 
+namespace deviceprocess{
+const size_t LISTENPORT = 5678;
+};
+
 namespace parentprocess{
 const size_t LISTNEPORT = 1234;
 const size_t LISTENBLOCKNUM = 10;
@@ -39,6 +43,9 @@ const size_t CPREQCLOSED = 2002;
 const size_t NULLSENDFDT = 3003;
 const size_t CCMESSAGECC = 4004;//客户间传递的消息
 const size_t CCREQCLOSED = 5005;
+const size_t NULLSENDALA = 6006;
+const size_t DPSENDALARM = 7007;
+const size_t PCMESSAGEPC = 8008;
 };
 
 };

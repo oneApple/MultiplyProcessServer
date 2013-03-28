@@ -8,12 +8,12 @@
 #ifndef RECVFDANDSENDMSGMSG_H_
 #define RECVFDANDSENDMSGMSG_H_
 #include"messageHandleInterface.h"
-class recvFdAndSendMsgMsg : public messageHandleInterface{
+class recvNewFdMsg : public messageHandleInterface{
 private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	recvFdAndSendMsgMsg():messageHandleInterface(magicnum::messagetype::PCREQSENDFD){}
+	recvNewFdMsg():messageHandleInterface(){}
 };
 
 #endif /* HANDLEREQSENDFDMSG_H_ */

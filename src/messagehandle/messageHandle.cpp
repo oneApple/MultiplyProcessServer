@@ -7,10 +7,14 @@
 #include"messagehandle/messageHandle.h"
 #include"commondata/magicNum.h"
 #include"messagehandle/SendNewfdMsg.h"
-#include"messagehandle/recvFdAndSendMsgMsg.h"
-#include"messagehandle/handleSendMsgMsg.h"
+#include"messagehandle/recvNewFdMsg.h"
+#include"messagehandle/recvcAndSendcMsgMsg.h"
 #include"messagehandle/sendReqCloseMsg.h"
 #include"messagehandle/handleAndRecvCloseMsg.h"
+#include"messagehandle/sendAlarmMsg.h"
+#include"messagehandle/recvAlarmAndSendMsgMsg.h"
+#include"messagehandle/recvpAndSendcMsgMsg.h"
+
 
 #include<assert.h>
 messageHandle* messageHandle::_singleInstance = NULL;
@@ -18,10 +22,15 @@ messageHandle* messageHandle::_singleInstance = NULL;
 messageHandle::messageHandle()
 {
 	this->_mmsgHandle[magicnum::messagetype::NULLSENDFDT] = new SendNewfdMsg;
-	this->_mmsgHandle[magicnum::messagetype::PCREQSENDFD] = new recvFdAndSendMsgMsg;
-	this->_mmsgHandle[magicnum::messagetype::CCMESSAGECC] = new handleSendMsgMsg;
+	this->_mmsgHandle[magicnum::messagetype::PCREQSENDFD] = new recvNewFdMsg;
+	this->_mmsgHandle[magicnum::messagetype::CCMESSAGECC] = new recvcAndSendcMsgMsg;
 	this->_mmsgHandle[magicnum::messagetype::CCREQCLOSED] = new sendReqCloseMsg;
 	this->_mmsgHandle[magicnum::messagetype::CPREQCLOSED] = new handleAndRecvCloseMsg;
+	this->_mmsgHandle[magicnum::messagetype::NULLSENDALA] = new sendAlarmMsg;
+	this->_mmsgHandle[magicnum::messagetype::DPSENDALARM] = new recvAlarmAndSendMsgMsg;
+	this->_mmsgHandle[magicnum::messagetype::PCMESSAGEPC] = new recvpAndSendcMsgMsg;
+
+
 }
 
 void messageHandle::msgHandle(void *recvbuf,int recvfd,void *uperuser)

@@ -13,7 +13,7 @@ private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	sendReqCloseMsg():messageHandleInterface(magicnum::messagetype::CPREQCLOSED){}
+	sendReqCloseMsg():messageHandleInterface(){}
 };
 
 #endif /* HANDLEREQCLOSEMSG_H_ */

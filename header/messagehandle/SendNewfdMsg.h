@@ -13,7 +13,7 @@ private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	SendNewfdMsg():messageHandleInterface(magicnum::messagetype::NULLSENDFDT){}
+	SendNewfdMsg():messageHandleInterface(){}
 };
 
 #endif /* HANDLESENDFDMSG_H_ */

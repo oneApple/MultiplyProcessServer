@@ -17,12 +17,11 @@ class messageHandleInterface{
 protected:
 	unsigned _dataBodysize;
 	unsigned _recvDatasize;
-	unsigned _recvDatatype;
 	void *_uperuser;
 	int _recvSocketfd;
 	int _sendSocketfd;
 protected:
-	messageHandleInterface(unsigned type):_uperuser(NULL){}
+	messageHandleInterface():_uperuser(NULL){}
 	virtual commontype::headInfo *packDataHead() = 0;
 	virtual char *packDataBody() = 0;
 	void mergeDataHeadAndBody()

@@ -14,7 +14,7 @@ private:
 	virtual commontype::headInfo *packDataHead();
 	virtual char *packDataBody();
 public:
-	handleAndRecvCloseMsg():messageHandleInterface(magicnum::messagetype::CPREQCLOSED){}
+	handleAndRecvCloseMsg():messageHandleInterface(){}
 };
 
 #endif /* HANDLEANDRECVCLOSEMSG_H_ */

@@ -11,18 +11,24 @@
 #include<map>
 #include"handleEpollSocket.h"
 #include"childProcessInfo.h"
+#include"globalDataControl.h"
 
 class parentProcess : protected handleEpollSocket{
 private:
 	int _netListenfd;//接受客户端连接的socket
-	std::map<int,bool> _mSocketAndAlloc;
+	int _devicefd;
 	std::deque<int> _dnewConnectSocket;
+	globalDataControl _cfdAndAlloc;
 private:
 	void initializeListenfd();
 	void initializeChildProcessfd(int num);
 	void acceptNewConnection(int newfd);
 	void sendNewConnection(int sendfd);
 public:
+	const int GetFreeSockfd()
+	{
+		return this->_cfdAndAlloc.AllocFreeSockfd();
+	}
 	void relEpollSocket(int socket,PROCESSSTATE type);
 	void InitializeManage(int num)throw(std::exception);
 	void AddSocketToEpoll(int socket);

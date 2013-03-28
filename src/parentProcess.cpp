@@ -16,10 +16,9 @@
 
 #include"parentProcess.h"
 #include"processManage.h"
+#include"deviceProcess.h"
 
 #include"messagehandle/messageHandle.h"
-
-#define MAXLINE 10
 
 void parentProcess::initializeListenfd()
 {
@@ -50,6 +49,8 @@ void parentProcess::initializeListenfd()
 void parentProcess::initializeChildProcessfd(int num)
 {
 	processManage::GetInstance()->CreateAllProcess(num,this);
+    this->_devicefd = deviceProcess::GetInstance()->GetSocketfdAndRun();
+    handleEpollSocket::addEpollSocket(this->_devicefd);
 }
 
 void parentProcess::InitializeManage(int num)
@@ -78,7 +79,7 @@ void parentProcess::sendNewConnection(int sendfd)
 	this->_dnewConnectSocket.pop_front();
 	if(send_fd(sendfd,newfd) == magicnum::SUCCESS)
 	{
-		this->_mSocketAndAlloc[sendfd] = true;
+		this->_cfdAndAlloc.AddFreeSockfd(sendfd);
 	}
 	close(newfd);
 }
@@ -91,6 +92,7 @@ void parentProcess::AddSocketToEpoll(int socket)
 void parentProcess::relEpollSocket(int socket,PROCESSSTATE type)
 {
 	int result = processManage::GetInstance()->ReleaseProcess(socket,type);
+	this->_cfdAndAlloc.DelCloseSockfd(socket);
 	if(type == ERR && result == magicnum::SUCCESS)
 	{
 		printf("relEpollSocket error\n");
@@ -104,7 +106,7 @@ void parentProcess::CommunicationHandle()
 	std::deque<pid_t*> _dPid;
 	int connfd;
 	int readbytes;
-	char readbuf[MAXLINE];
+	char readbuf[magicnum::MSGHEADSIZE];
 	std::deque<int> newcondeque;
 	for(;;)
 	{
@@ -136,7 +138,7 @@ void parentProcess::CommunicationHandle()
 			}
 			else if(events[i].events&EPOLLIN)
 			{
-				memset(readbuf,0,MAXLINE);
+				memset(readbuf,0,magicnum::MSGHEADSIZE);
 				int _childSocketfd = events[i].data.fd;
 				if((readbytes=RepeatRecv(_childSocketfd,readbuf,sizeof(commontype::headInfo))) == magicnum::FAILIED)
 				{

@@ -1,18 +1,19 @@
 /*
- * handleSendMsgMsg.cpp
+ * recvpAndSendcMsgMsg.cpp
  *
- *  Created on: 2013-2-1
+ *  Created on: Mar 28, 2013
  *      Author: keym
  */
-#include"messagehandle/handleSendMsgMsg.h"
+#include"messagehandle/recvpAndSendcMsgMsg.h"
 #include"commonfunction/netSocketFun.h"
+#include"childProcess.h"
 #include<unistd.h>
 
 #include<iostream>
 #include<assert.h>
-commontype::headInfo *handleSendMsgMsg::packDataHead()
+commontype::headInfo *recvpAndSendcMsgMsg::packDataHead()
 {
-	this->_sendSocketfd = this->_recvSocketfd;
+	this->_sendSocketfd = ((childProcess *)this->_uperuser)->GetSocketfd('c');
 
 	commontype::headInfo *phead = new commontype::headInfo;
 	phead->_size = this->_dataBodysize;
@@ -20,7 +21,7 @@ commontype::headInfo *handleSendMsgMsg::packDataHead()
 	return phead;
 }
 
-char *handleSendMsgMsg::packDataBody()
+char *recvpAndSendcMsgMsg::packDataBody()
 {
 	int readbytes;
 	char *readbuf = new char[this->_recvDatasize];
@@ -29,8 +30,6 @@ char *handleSendMsgMsg::packDataBody()
 		//这里可能是客户端关闭或出现错误
 		return 0;
 	}
-	pid_t *temp = (pid_t *)readbuf;
-	assert(*temp == getpid());
 	delete readbuf;
 	char *buf = new char[sizeof(pid_t)];
 	pid_t *pid = (pid_t*)buf;
@@ -38,4 +37,5 @@ char *handleSendMsgMsg::packDataBody()
 	this->_dataBodysize = sizeof(pid_t);
 	return buf;
 }
+
 
