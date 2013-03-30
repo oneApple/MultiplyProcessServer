@@ -21,12 +21,9 @@ protected:
 	int _recvSocketfd;
 	int _sendSocketfd;
 	commontype::headInfo *phead;
-private:
-	commontype::dataInfo *pdataInfo;
 protected:
 	messageHandleInterface():_uperuser(NULL)
 	{
-		this->pdataInfo = new commontype::dataInfo;
 		this->phead = new commontype::headInfo;
 	}
 	virtual void packDataHead() = 0;
@@ -41,8 +38,8 @@ protected:
 		{
 			return;
 		}
-
-		this->pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
+		commontype::dataInfo *pdataInfo = new commontype::dataInfo;
+		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
 		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
 		memset(phead,0,sizeof(commontype::headInfo));
 
@@ -68,10 +65,6 @@ public:
 public:
 	virtual ~messageHandleInterface()
 	{
-		if(this->pdataInfo != NULL)
-		{
-			delete this->pdataInfo;
-		}
 		if(this->phead != NULL)
 		{
 			delete this->phead;

@@ -86,4 +86,6 @@ void handleEpollSocket::sendData(int sendfd)
 	{
 		perror("handleEpollSocket::sendData");
 	}
+	delete []pdataInfo->_pdata;
+	delete pdataInfo;
 }
