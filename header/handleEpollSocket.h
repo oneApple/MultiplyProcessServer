@@ -13,7 +13,7 @@
 #include"commonfunction/localSocketFun.h"
 #include"commonfunction/netSocketFun.h"
 #include"commondata/magicNum.h"
-#include"commondata/commontype.h"
+#include"commondata/dataInfo.h"
 #include<unistd.h>
 #include<errno.h>
 
@@ -23,7 +23,7 @@ class handleEpollSocket{
 protected:
 	int _epfd;
 	unsigned _maxNumOfEpollfd;
-	std::deque<commontype::dataInfo*> _ddataToSend;
+	std::deque<dataInfo*> _ddataToSend;
 private:
 	void getEpollFdlimit();
 	void createEpollfd();

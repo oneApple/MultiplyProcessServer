@@ -7,7 +7,7 @@
 
 #ifndef MESSAGEHANDLEINTERFACE_H_
 #define MESSAGEHANDLEINTERFACE_H_
-#include"commondata/commontype.h"
+#include"commondata/dataInfo.h"
 #include"commondata/magicNum.h"
 #include"commonfunction/netSocketFun.h"
 #include"../handleEpollSocket.h"
@@ -38,17 +38,8 @@ protected:
 		{
 			return;
 		}
-		commontype::dataInfo *pdataInfo = new commontype::dataInfo;
-		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
-		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
-		memset(phead,0,sizeof(commontype::headInfo));
-
-		if(this->_dataBodysize != 0)
-		{
-			memcpy(pdataInfo->_pdata + sizeof(commontype::headInfo),pbody,this->_dataBodysize);
-			delete []pbody;
-		}
-		pdataInfo->_size = sizeof(commontype::headInfo) + this->_dataBodysize;
+		dataInfo *pdataInfo = new dataInfo;
+		pdataInfo->PackMsg(this->_dataBodysize,(char*)this->phead,pbody);
 
 		handleEpollSocket *_tempuser = (handleEpollSocket *)this->_uperuser;
 		_tempuser->packData(pdataInfo);

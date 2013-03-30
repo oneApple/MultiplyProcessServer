@@ -75,17 +75,16 @@ void handleEpollSocket::modEpollSocket(int fd,bool rTow)
 
 void handleEpollSocket::packData(void *pdata)
 {
-	this->_ddataToSend.push_back((commontype::dataInfo*)pdata);
+	this->_ddataToSend.push_back((dataInfo*)pdata);
 }
 
 void handleEpollSocket::sendData(int sendfd)
 {
-	commontype::dataInfo *pdataInfo = this->_ddataToSend[0];
+	dataInfo *pdataInfo = this->_ddataToSend[0];
 	this->_ddataToSend.pop_front();
-	if(RepeatSend(sendfd,(char*)pdataInfo->_pdata,pdataInfo->_size) == magicnum::FAILIED)
+	if(RepeatSend(sendfd,pdataInfo->GetData(),pdataInfo->GetSize()) == magicnum::FAILIED)
 	{
 		perror("handleEpollSocket::sendData");
 	}
-	delete []pdataInfo->_pdata;
 	delete pdataInfo;
 }
