@@ -10,6 +10,7 @@
 #include"commondata/dataInfo.h"
 #include"commondata/magicNum.h"
 #include"commonfunction/netSocketFun.h"
+#include"commondata/fixmemorypool.h"
 #include"../handleEpollSocket.h"
 #include<string.h>
 //所有信息处理类的父类
@@ -38,8 +39,16 @@ protected:
 		{
 			return;
 		}
-		dataInfo *pdataInfo = new dataInfo;
-		pdataInfo->PackMsg(this->_dataBodysize,(char*)this->phead,pbody);
+		dataInfo *pdataInfo = fixmemorypool<dataInfo>::getInstance()->mem_pool_alloc();
+		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
+		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
+		memset(this->phead,0,sizeof(commontype::headInfo));
+		if(this->_dataBodysize != 0)
+		{
+			memcpy(pdataInfo->_pdata + sizeof(commontype::headInfo),pbody,this->_dataBodysize);
+			delete []pbody;
+		}
+		pdataInfo->_size = sizeof(commontype::headInfo) + this->_dataBodysize;
 
 		handleEpollSocket *_tempuser = (handleEpollSocket *)this->_uperuser;
 		_tempuser->packData(pdataInfo);
