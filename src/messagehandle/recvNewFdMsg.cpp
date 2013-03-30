@@ -9,12 +9,12 @@
 #include"messagehandle/recvNewFdMsg.h"
 #include"commonfunction/netSocketFun.h"
 #include<unistd.h>
-commontype::headInfo *recvNewFdMsg::packDataHead()
+void recvNewFdMsg::packDataHead()
 {
 	childProcess *_tempuser = (childProcess *)this->_uperuser;
 	_tempuser->acceptClientSocket();
 	_tempuser->AddEpollSocket(_tempuser->GetSocketfd('c'));
-	return NULL;
+    this->phead->_type = magicnum::messagetype::NULLTYPENUM;
 }
 
 char *recvNewFdMsg::packDataBody()

@@ -11,14 +11,11 @@
 
 #include<iostream>
 #include<assert.h>
-commontype::headInfo *recvpAndSendcMsgMsg::packDataHead()
+void recvpAndSendcMsgMsg::packDataHead()
 {
 	this->_sendSocketfd = ((childProcess *)this->_uperuser)->GetSocketfd('c');
-
-	commontype::headInfo *phead = new commontype::headInfo;
-	phead->_size = this->_dataBodysize;
-	phead->_type = magicnum::messagetype::CCMESSAGECC;
-	return phead;
+	this->phead->_size = this->_dataBodysize;
+	this->phead->_type = magicnum::messagetype::CCMESSAGECC;
 }
 
 char *recvpAndSendcMsgMsg::packDataBody()

@@ -20,24 +20,31 @@ protected:
 	void *_uperuser;
 	int _recvSocketfd;
 	int _sendSocketfd;
+	commontype::headInfo *phead;
+private:
+	commontype::dataInfo *pdataInfo;
 protected:
-	messageHandleInterface():_uperuser(NULL){}
-	virtual commontype::headInfo *packDataHead() = 0;
+	messageHandleInterface():_uperuser(NULL)
+	{
+		this->pdataInfo = new commontype::dataInfo;
+		this->phead = new commontype::headInfo;
+	}
+	virtual void packDataHead() = 0;
 	virtual char *packDataBody() = 0;
+
 	void mergeDataHeadAndBody()
 	{
-		commontype::dataInfo *pdataInfo = new commontype::dataInfo;
 		char *pbody = this->packDataBody();//顺序不能换
-		commontype::headInfo *phead = this->packDataHead();
+		this->packDataHead();
 
-		if(phead == NULL)
+		if(this->phead->_type == magicnum::messagetype::NULLTYPENUM)
 		{
 			return;
 		}
 
-		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
+		this->pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
 		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
-		delete phead;
+		memset(phead,0,sizeof(commontype::headInfo));
 
 		if(this->_dataBodysize != 0)
 		{
@@ -57,6 +64,18 @@ public:
 		this->_recvSocketfd = recvfd;
 		this->_uperuser = uperuser;
 		mergeDataHeadAndBody();
+	}
+public:
+	virtual ~messageHandleInterface()
+	{
+		if(this->pdataInfo != NULL)
+		{
+			delete this->pdataInfo;
+		}
+		if(this->phead != NULL)
+		{
+			delete this->phead;
+		}
 	}
 };
 

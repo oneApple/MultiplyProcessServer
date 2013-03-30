@@ -9,15 +9,13 @@
 #include"deviceProcess.h"
 #include<unistd.h>
 
-commontype::headInfo *sendAlarmMsg::packDataHead()
+void sendAlarmMsg::packDataHead()
 {
 	 deviceProcess *_tempuser = (deviceProcess *)this->_uperuser;
 	 this->_sendSocketfd = _tempuser->GetParentSocketfd();
 
-     commontype::headInfo *phead = new commontype::headInfo;
-     phead->_size = this->_dataBodysize;
-     phead->_type =magicnum::messagetype::DPSENDALARM;
-     return phead;
+     this->phead->_size = this->_dataBodysize;
+     this->phead->_type =magicnum::messagetype::DPSENDALARM;
 }
 
 char *sendAlarmMsg::packDataBody()

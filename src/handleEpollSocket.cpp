@@ -84,7 +84,6 @@ void handleEpollSocket::sendData(int sendfd)
 	this->_ddataToSend.pop_front();
 	if(RepeatSend(sendfd,(char*)pdataInfo->_pdata,pdataInfo->_size) == magicnum::FAILIED)
 	{
-		//perror("handleEpollSocket::sendData");
+		perror("handleEpollSocket::sendData");
 	}
-	delete pdataInfo;
 }

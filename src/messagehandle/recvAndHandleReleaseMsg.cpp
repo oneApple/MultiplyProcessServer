@@ -13,10 +13,10 @@
 #include<iostream>
 #include<assert.h>
 
-commontype::headInfo *recvAndHandleReleaseMsg::packDataHead()
+void recvAndHandleReleaseMsg::packDataHead()
 {
 	((parentProcess *)this->_uperuser)->ReleaseSockfd(this->_recvSocketfd);
-	return NULL;
+	this->phead->_type = magicnum::messagetype::NULLTYPENUM;
 }
 
 char *recvAndHandleReleaseMsg::packDataBody()

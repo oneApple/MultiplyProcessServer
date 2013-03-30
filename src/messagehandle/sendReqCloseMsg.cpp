@@ -8,20 +8,17 @@
 #include"childProcess.h"
 #include<unistd.h>
 
-commontype::headInfo *sendReqCloseMsg::packDataHead()
+void sendReqCloseMsg::packDataHead()
 {
-    childProcess *_tempuser = (childProcess *)this->_uperuser;
+	childProcess *_tempuser = (childProcess *)this->_uperuser;
 	this->_sendSocketfd = _tempuser->GetSocketfd('p');
 	close(_tempuser->GetSocketfd('c'));
-
-	 commontype::headInfo *phead = new commontype::headInfo;
-     phead->_size = this->_dataBodysize;
-     phead->_type = magicnum::messagetype::CPREQCLOSED;
-     return phead;
+	this->phead->_size = this->_dataBodysize;
+	this->phead->_type = magicnum::messagetype::CPREQCLOSED;
 }
 
 char *sendReqCloseMsg::packDataBody()
 {
-    this->_dataBodysize = 0;
-    return 0;
+	this->_dataBodysize = 0;
+	return 0;
 }

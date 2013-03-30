@@ -12,19 +12,18 @@
 #include<unistd.h>
 #include<iostream>
 #include<assert.h>
-commontype::headInfo *recvAlarmAndSendMsgMsg::packDataHead()
+void recvAlarmAndSendMsgMsg::packDataHead()
 {
 	int _allocfd = ((parentProcess *)this->_uperuser)->GetFreeSockfd();
 	if(_allocfd == magicnum::FAILIED)
 	{
-		return NULL;
+		this->phead->_type = magicnum::messagetype::NULLTYPENUM;
+		return;
 	}
 	this->_sendSocketfd = _allocfd;
 
-	commontype::headInfo *phead = new commontype::headInfo;
-	phead->_size = this->_dataBodysize;
-	phead->_type = magicnum::messagetype::PCMESSAGEPC;
-	return phead;
+	this->phead->_size = this->_dataBodysize;
+	this->phead->_type = magicnum::messagetype::PCMESSAGEPC;
 }
 
 char *recvAlarmAndSendMsgMsg::packDataBody()

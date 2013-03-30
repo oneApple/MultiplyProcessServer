@@ -12,14 +12,12 @@
 
 #include<iostream>
 #include<assert.h>
-commontype::headInfo *recvAndSendReleaseMsg::packDataHead()
+void recvAndSendReleaseMsg::packDataHead()
 {
 
 	this->_sendSocketfd = ((childProcess *)this->_uperuser)->GetSocketfd('p');
-	commontype::headInfo *phead = new commontype::headInfo;
-	phead->_size = this->_dataBodysize;
-	phead->_type = magicnum::messagetype::CPRELEASECP;
-	return phead;
+	this->phead->_size = this->_dataBodysize;
+	this->phead->_type = magicnum::messagetype::CPRELEASECP;
 }
 
 char *recvAndSendReleaseMsg::packDataBody()

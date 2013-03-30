@@ -7,14 +7,11 @@
 #include"messagehandle/SendNewfdMsg.h"
 #include<unistd.h>
 
-commontype::headInfo *SendNewfdMsg::packDataHead()
+void SendNewfdMsg::packDataHead()
 {
 	 this->_sendSocketfd = this->_recvSocketfd;
-
-     commontype::headInfo *phead = new commontype::headInfo;
-     phead->_size = this->_dataBodysize;
-     phead->_type = magicnum::messagetype::PCREQSENDFD;
-     return phead;
+     this->phead->_size = this->_dataBodysize;
+     this->phead->_type = magicnum::messagetype::PCREQSENDFD;
 }
 
 char *SendNewfdMsg::packDataBody()

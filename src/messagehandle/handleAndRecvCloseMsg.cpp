@@ -9,11 +9,11 @@
 #include"parentProcess.h"
 #include<unistd.h>
 
-commontype::headInfo *handleAndRecvCloseMsg::packDataHead()
+void handleAndRecvCloseMsg::packDataHead()
 {
 	parentProcess *_tempuser = (parentProcess *)this->_uperuser;
     _tempuser->relEpollSocket(this->_recvSocketfd,INIT);
-    return NULL;
+    this->phead->_type = magicnum::messagetype::NULLTYPENUM;
 }
 
 char *handleAndRecvCloseMsg::packDataBody()

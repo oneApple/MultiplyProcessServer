@@ -10,7 +10,7 @@
 #include"messageHandleInterface.h"
 class sendReqCloseMsg : public messageHandleInterface{
 private:
-	virtual commontype::headInfo *packDataHead();
+	virtual void packDataHead();
 	virtual char *packDataBody();
 public:
 	sendReqCloseMsg():messageHandleInterface(){}

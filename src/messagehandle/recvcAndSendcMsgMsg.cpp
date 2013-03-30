@@ -10,14 +10,13 @@
 
 #include<iostream>
 #include<assert.h>
-commontype::headInfo *recvcAndSendcMsgMsg::packDataHead()
+void recvcAndSendcMsgMsg::packDataHead()
 {
 	this->_sendSocketfd = this->_recvSocketfd;
 
-	commontype::headInfo *phead = new commontype::headInfo;
-	phead->_size = this->_dataBodysize;
-	phead->_type = magicnum::messagetype::CCRELEASECC;
-	return phead;
+	this->phead->_size = this->_dataBodysize;
+	this->phead->_type = magicnum::messagetype::CCRELEASECC;
+
 }
 
 char *recvcAndSendcMsgMsg::packDataBody()

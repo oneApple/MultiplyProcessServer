@@ -11,7 +11,7 @@
 #include"messageHandleInterface.h"
 class recvAndHandleReleaseMsg : public messageHandleInterface{
 private:
-	virtual commontype::headInfo *packDataHead();
+	virtual void packDataHead();
 	virtual char *packDataBody();
 public:
 	recvAndHandleReleaseMsg():messageHandleInterface(){}
