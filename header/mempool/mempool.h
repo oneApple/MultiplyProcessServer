@@ -1,6 +1,8 @@
 #pragma once
 #include"memblocklist.h"
+#include"commondata/magicNum.h"
 
+//此内存池不可扩充
 class MemPool{
 private:
 	void *pbuf;
@@ -34,7 +36,7 @@ public:
 	{
 		if(MemPool::_instance == NULL)
 		{
-			MemPool::_instance = new MemPool(new char[10000],10000);
+			MemPool::_instance = new MemPool(new char[magicnum::UNFIXMEMPOOLSIZE],magicnum::UNFIXMEMPOOLSIZE);
 		}
 		return MemPool::_instance;
 	}

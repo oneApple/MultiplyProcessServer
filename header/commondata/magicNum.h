@@ -14,6 +14,7 @@ namespace magicnum{
 const ssize_t SUCCESS = 0;
 const ssize_t FAILIED = -1;
 const ssize_t CLOSEED = -2;
+const size_t UNFIXMEMPOOLSIZE = 10000;
 const size_t MSGHEADSIZE = sizeof(size_t) * 2;
 
 namespace processmanage{
