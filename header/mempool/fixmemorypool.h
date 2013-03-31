@@ -134,7 +134,7 @@ type *fixmemorypool<type>::mem_pool_alloc()
 	mem_node<type> *p = this->nhead;
 	this->nhead = p->next;
 	-- this->left;
-	printf("alloc:%d,%d\n",this->total,this->left);
+	//printf("alloc:%d,%d\n",this->total,this->left);
 	return &p->node;
 }
 
@@ -148,7 +148,7 @@ void fixmemorypool<type>::mem_pool_release(type *ret)
 	((mem_node<type> *)ret)->next = this->nhead;
 	this->nhead = (mem_node<type> *)ret;
 	++ this->left;
-	printf("release:%d,%d\n",this->total,this->left);
+	//printf("release:%d,%d\n",this->total,this->left);
 }
 
 #endif /* FIXMEMORYPOOL_H_ */

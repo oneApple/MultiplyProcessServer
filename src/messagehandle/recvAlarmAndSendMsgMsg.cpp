@@ -28,7 +28,7 @@ void recvAlarmAndSendMsgMsg::packDataHead()
 
 char *recvAlarmAndSendMsgMsg::packDataBody()
 {
-	char *buf = new char[sizeof(pid_t)];
+	char *buf = this->getfreemem(sizeof(pid_t));
 	pid_t *pid = (pid_t*)buf;
 	*pid = getpid();
 	this->_dataBodysize = sizeof(pid_t);

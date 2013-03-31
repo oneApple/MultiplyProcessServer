@@ -13,7 +13,10 @@
 #include<stdio.h>
 #include"handleEpollSocket.h"
 #include"commondata/commontype.h"
-#include"commondata/fixmemorypool.h"
+#include"mempool/fixmemorypool.h"
+#include"mempool/mempool.h"
+
+static bool flag = true;
 
 void handleEpollSocket::getEpollFdlimit()
 {
@@ -85,8 +88,14 @@ void handleEpollSocket::sendData(int sendfd)
 	this->_ddataToSend.pop_front();
 	if(RepeatSend(sendfd,pdataInfo->_pdata,pdataInfo->_size) == magicnum::FAILIED)
 	{
-		perror("handleEpollSocket::sendData");
+		if(flag)
+		{
+			flag = false;
+			perror("handleEpollSocket::sendData");
+		}
 	}
-	delete []pdataInfo->_pdata;
-	fixmemorypool<dataInfo>::getInstance()->mem_pool_release(pdataInfo);
+	//delete []pdataInfo->_pdata;
+	MemPool::getInstance()->freeMem(pdataInfo->_pdata);
+	delete pdataInfo;
+	//fixmemorypool<dataInfo>::getInstance()->mem_pool_release(pdataInfo);
 }

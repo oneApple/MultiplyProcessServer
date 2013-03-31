@@ -23,7 +23,7 @@ void recvAndSendReleaseMsg::packDataHead()
 char *recvAndSendReleaseMsg::packDataBody()
 {
 	int readbytes;
-	char *readbuf = new char[this->_recvDatasize];
+	char *readbuf = this->getfreemem(this->_recvDatasize);
 	if((readbytes=RepeatRecv(this->_recvSocketfd,readbuf,this->_recvDatasize)) < 0)
 	{
 		//这里可能是客户端关闭或出现错误
@@ -31,7 +31,7 @@ char *recvAndSendReleaseMsg::packDataBody()
 	}
 	pid_t *temp = (pid_t *)readbuf;
 	assert(*temp == getpid());
-	delete readbuf;
+	this->releaseFreemem(readbuf);
 	this->_dataBodysize = 0;
 	return NULL;
 }

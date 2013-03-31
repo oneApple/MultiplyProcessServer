@@ -20,12 +20,13 @@ void recvNewFdMsg::packDataHead()
 char *recvNewFdMsg::packDataBody()
 {
 	int readbytes;
-	char *readbuf = new char[this->_recvDatasize];
+	char *readbuf = this->getfreemem(this->_recvDatasize);
 	if((readbytes=RepeatRecv(this->_recvSocketfd,readbuf,this->_recvDatasize)) < 0)
 	{
 		//这里可能是客户端关闭或出现错误
 		return 0;
 	}
+	this->releaseFreemem(readbuf);
 	this->_dataBodysize = 0;
 	return NULL;
 }

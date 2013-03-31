@@ -10,7 +10,8 @@
 #include"commondata/dataInfo.h"
 #include"commondata/magicNum.h"
 #include"commonfunction/netSocketFun.h"
-#include"commondata/fixmemorypool.h"
+#include"mempool/fixmemorypool.h"
+#include"mempool/mempool.h"
 #include"../handleEpollSocket.h"
 #include<string.h>
 //所有信息处理类的父类
@@ -30,6 +31,16 @@ protected:
 	virtual void packDataHead() = 0;
 	virtual char *packDataBody() = 0;
 
+    char *getfreemem(size_t size)
+    {
+    	return (char*)MemPool::getInstance()->getMem(size);
+    }
+
+    void releaseFreemem(void *pmem)
+    {
+    	MemPool::getInstance()->freeMem(pmem);
+    }
+
 	void mergeDataHeadAndBody()
 	{
 		char *pbody = this->packDataBody();//顺序不能换
@@ -39,14 +50,16 @@ protected:
 		{
 			return;
 		}
-		dataInfo *pdataInfo = fixmemorypool<dataInfo>::getInstance()->mem_pool_alloc();
-		pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
+		dataInfo *pdataInfo = new dataInfo;
+		//dataInfo *pdataInfo = fixmemorypool<dataInfo>::getInstance()->mem_pool_alloc();
+		//pdataInfo->_pdata = new char[sizeof(commontype::headInfo) + this->_dataBodysize];
+		pdataInfo->_pdata = (char *)MemPool::getInstance()->getMem(sizeof(commontype::headInfo) + this->_dataBodysize);
 		memcpy(pdataInfo->_pdata,phead,sizeof(commontype::headInfo));
 		memset(this->phead,0,sizeof(commontype::headInfo));
 		if(this->_dataBodysize != 0)
 		{
 			memcpy(pdataInfo->_pdata + sizeof(commontype::headInfo),pbody,this->_dataBodysize);
-			delete []pbody;
+			this->releaseFreemem(pbody);
 		}
 		pdataInfo->_size = sizeof(commontype::headInfo) + this->_dataBodysize;
 
